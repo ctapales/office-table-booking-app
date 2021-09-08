@@ -1,4 +1,4 @@
-import Login from "./pages/Login/Login";
+// import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import React, { Component } from "react";
 import "./App.scss";
@@ -19,7 +19,8 @@ class App extends Component {
     return (
       <div className="App">
         <React.Fragment>
-          {this.state.user ? <Home /> : <Login />}
+         {/* {this.state.user ? <Home /> : <Login />} */}
+         <Home />
         </React.Fragment>
       </div>
     );
