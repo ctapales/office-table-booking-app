@@ -2,15 +2,15 @@
     "levels": [
       {
         "levelID": 1,
-        "name": "Floor 1"
+        "name": "Level 1"
       },
       {
         "levelID": 2,
-        "name": "Floor 2"
+        "name": "Level 2"
       },
       {
         "levelID": 3,
-        "name": "Floor 3"
+        "name": "Level 3"
       }
     ],
     "tables": [
@@ -58,6 +58,26 @@
         "tableID": 9,
         "name": "Table 3.3",
         "levelID": 3
+      }
+    ],
+    "reservedTables": [
+      {
+        "reserveID": 1,
+        "levelID": 1,
+        "tableID": 2,
+        "date": "Wed Sep 08 2021 10:30:00 GMT+0800 (Philippine Standard Time)"
+      },
+      {
+        "reserveID": 2,
+        "levelID": 2,
+        "tableID": 6,
+        "date": "Wed Sep 08 2021 14:00:00 GMT+0800 (Philippine Standard Time)"
+      },
+      {
+        "reserveID": 3,
+        "levelID": 3,
+        "tableID": 7,
+        "date": "Thu Sep 09 2021 08:30:00 GMT+0800 (Philippine Standard Time)"
       }
     ]
   }
