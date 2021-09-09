@@ -90,13 +90,16 @@ class Home extends Component {
   handleSaveClick(event) {
     event.preventDefault();
     let index = this.state.reservedTables.length;
-    let date = new Date();
+    let date = new Date(this.state.selectedDate);
+    let europeDate = date.toLocaleString("en-US", {
+      timeZone: "Europe/Amsterdam"
+    });
     let reservation = {
       reserveID: index,
       levelID: this.state.selectedLevel,
       tableID: this.state.selectedTable,
-      date: date,
-      type: this.state.selectedSchedule
+      date: europeDate,
+      schedule: this.state.selectedSchedule
     };
 
     this.setState({

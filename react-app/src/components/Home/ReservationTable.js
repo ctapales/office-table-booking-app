@@ -68,7 +68,7 @@ function TableBody(props) {
 
 function ReservationTable(props) {
   return (
-    <Table striped bordered hover className="mt-5">
+    <Table striped bordered className="mt-5" variant="light">
       <thead>
         <tr>
           <th>Floor</th>
