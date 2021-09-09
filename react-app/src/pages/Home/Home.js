@@ -14,7 +14,11 @@ class Home extends Component {
       tables: [],
       levelTables: [],
       reservedTables: [],
-      schedule: ["Half", "Full"]
+      schedule: ["Morning", "Evening", "Whole Day"],
+      selectedSchedule: "Morning",
+      selectedLevel: 1,
+      selectedTable: 1,
+      selectedDate: new Date()
     };
   }
 
@@ -25,11 +29,18 @@ class Home extends Component {
 
   initialize() {
     fetch("./test-data.json").then(response => response.json()).then(data => {
+      let date = new Date();
+      let dateString = date.toLocaleString("en-US", {
+        timeZone: "Europe/Amsterdam"
+      });
+      let selectedDate = new Date(dateString);
+
       this.setState(
         {
           levels: data.levels,
           tables: data.tables,
-          reservedTables: data.reservedTables
+          reservedTables: data.reservedTables,
+          selectedDate: selectedDate
         },
         () => {
           this.getLevelTables(this.state.levels[0]["levelID"]);
@@ -54,11 +65,50 @@ class Home extends Component {
   // Handles changes in the floor level dropdown select
   handleLevelChange(event) {
     let levelID = event.target.value;
-    this.getLevelTables(levelID);
+    this.setState({ selectedLevel: parseInt(levelID, 10) }, () =>
+      this.getLevelTables(levelID)
+    );
+  }
+
+  // Handles changes in the floor level dropdown select
+  handleTableChange(event) {
+    let selectedTable = event.target.value;
+    this.setState({ selectedTable: parseInt(selectedTable, 10) });
+  }
+
+  handleDateChange(selectedDate) {
+    this.setState({ selectedDate: selectedDate });
+  }
+
+  // Handles changes in the floor level dropdown select
+  handleScheduleChange(event) {
+    let selectedSchedule = event.target.value;
+    this.setState({ selectedSchedule: selectedSchedule });
+  }
+
+  // Handles changes in the floor level dropdown select
+  handleSaveClick(event) {
+    event.preventDefault();
+    let index = this.state.reservedTables.length;
+    let date = new Date();
+    let reservation = {
+      reserveID: index,
+      levelID: this.state.selectedLevel,
+      tableID: this.state.selectedTable,
+      date: date,
+      type: this.state.selectedSchedule
+    };
+
+    this.setState({
+      reservedTables: [...this.state.reservedTables, reservation]
+    });
   }
 
   render() {
-    console.log(`STATE VALUES: ${this.state}`);
+    console.log(
+      `STATE VALUES: ${this.state.selectedLevel} ${this.state
+        .selectedTable} ${this.state.selectedDate} ${this.state.selectedSchedule}`
+    );
 
     return (
       <div className="page-home">
@@ -66,8 +116,11 @@ class Home extends Component {
           <ReservationForm
             // Passes all state variables to child component
             {...this.state}
-            // Passes/Binds this.handleLevelChange as handleLevelChange to child component
             handleLevelChange={this.handleLevelChange.bind(this)}
+            handleTableChange={this.handleTableChange.bind(this)}
+            handleDateChange={this.handleDateChange.bind(this)}
+            handleScheduleChange={this.handleScheduleChange.bind(this)}
+            handleSaveClick={this.handleSaveClick.bind(this)}
           />
           <ReservationTable
             // Passes all state variables to child component

@@ -17,6 +17,7 @@
       {
         "tableID": 1,
         "name": "Table 1.1",
+        "status": "Unavailable",
         "levelID": 1
       },
       {
@@ -65,19 +66,22 @@
         "reserveID": 1,
         "levelID": 1,
         "tableID": 2,
-        "date": "Wed Sep 08 2021 10:30:00 GMT+0800 (Philippine Standard Time)"
+        "date": "Wed Sep 08 2021 10:30:00 GMT+0800 (Philippine Standard Time)",
+        "schedule": "Morning"
       },
       {
         "reserveID": 2,
         "levelID": 2,
         "tableID": 6,
-        "date": "Wed Sep 08 2021 14:00:00 GMT+0800 (Philippine Standard Time)"
+        "date": "Wed Sep 08 2021 14:00:00 GMT+0800 (Philippine Standard Time)",
+        "schedule": "Whole Day"
       },
       {
         "reserveID": 3,
         "levelID": 3,
         "tableID": 7,
-        "date": "Thu Sep 09 2021 08:30:00 GMT+0800 (Philippine Standard Time)"
+        "date": "Thu Sep 09 2021 08:30:00 GMT+0800 (Philippine Standard Time)",
+        "schedule": "Evening"
       }
     ]
   }

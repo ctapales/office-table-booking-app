@@ -21,40 +21,43 @@ function GetTable(tableID, props) {
   return;
 }
 
-function FormatDate(reservedDate) {
-  let date = new Date(reservedDate);
-  let month = ("0" + (date.getMonth() + 1)).slice(-2);
-  let day = date.getDate();
-  let year = date.getFullYear();
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12;
-  hours = hours ? hours : 12;
-  hours = ("0" + hours).slice(-2);
-  minutes = ("0" + minutes).slice(-2);
+function FormatDate(date) {
+  let newDate = new Date(date);
+  let month = ("0" + (newDate.getMonth() + 1)).slice(-2);
+  let day = ("0" + (newDate.getDate() + 1)).slice(-2);
+  let year = newDate.getFullYear();
 
-  return `${month}/${day}/${year} ${hours}:${minutes} ${ampm}`;
+  return `${month}/${day}/${year}`;
+}
+
+function FormatSchedule(schedule) {
+  let suffix = schedule === "Morning" ? "(Until 12:00 PM)" : "(Until 04:00 PM)"
+
+  return `${schedule} ${suffix}`;
 }
 
 function TableBody(props) {
   let row = [];
 
   for (let i = 0; i < props["reservedTables"].length; i++) {
-    let levelName = GetLevel(props["reservedTables"][i]["levelID"], props);
-    let tableName = GetTable(props["reservedTables"][i]["tableID"], props);
-    let timeBooked = FormatDate(props["reservedTables"][i]["date"]);
+    if(props.selectedLevel !== props["reservedTables"][i]["levelID"]) {
+      continue;
+    }
+    let level = GetLevel(props["reservedTables"][i]["levelID"], props);
+    let table = GetTable(props["reservedTables"][i]["tableID"], props);
+    let date = FormatDate(props["reservedTables"][i]["date"]);
+    let schedule = FormatSchedule(props["reservedTables"][i]["schedule"])
 
     row.push(
-      <tr>
+      <tr key={i}>
         <td>
-          {levelName}
+          {level}
         </td>
         <td>
-          {tableName}
+          {table}
         </td>
         <td>
-          {timeBooked}
+          {date}, {schedule}
         </td>
       </tr>
     );
@@ -65,12 +68,12 @@ function TableBody(props) {
 
 function ReservationTable(props) {
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover className="mt-5">
       <thead>
         <tr>
           <th>Floor</th>
           <th>Table</th>
-          <th>Time Booked</th>
+          <th>Schedule</th>
         </tr>
       </thead>
       <tbody>
