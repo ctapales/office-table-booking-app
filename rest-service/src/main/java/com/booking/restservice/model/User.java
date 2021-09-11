@@ -1,8 +1,12 @@
 package com.booking.restservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "tbl_user")
 public class User extends Auditable<String>{
 
     @Column(name = "first_name",nullable = false)
@@ -17,8 +21,11 @@ public class User extends Auditable<String>{
     @Column(name = "password",nullable = false)
     private String password;
 
-    @Column(name = "role",  columnDefinition = "varchar(32) default 'EMPLOYEE'")
+    @Column(name = "role",  columnDefinition = "varchar(10) default 'EMPLOYEE'")
     private UserRole role = UserRole.EMPLOYEE;
+
+    @OneToMany(mappedBy = "user")
+    private List<Reservation> reservations;
 
     public User() {
     }
@@ -61,5 +68,14 @@ public class User extends Auditable<String>{
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    @JsonManagedReference(value="user-reservation")
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

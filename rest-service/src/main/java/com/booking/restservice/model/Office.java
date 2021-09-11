@@ -1,15 +1,17 @@
 package com.booking.restservice.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "offices")
+@Table(name = "tbl_office")
 public class Office extends Auditable<String>{
 
-    @Column(name = "office_name", nullable = false)
-    private String officeName;
+    @Column(name = "number", nullable = false)
+    private int number;
 
     @OneToMany(mappedBy = "office")
     private List<Desk> desks;
@@ -17,11 +19,20 @@ public class Office extends Auditable<String>{
     public Office() {
     }
 
-    public String getOfficeName() {
-        return officeName;
+    public int getNumber() {
+        return number;
     }
 
-    public void setOfficeName(String officeName) {
-        this.officeName = officeName;
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    @JsonManagedReference(value="office")
+    public List<Desk> getDesks() {
+        return desks;
+    }
+
+    public void setDesks(List<Desk> desks) {
+        this.desks = desks;
     }
 }
