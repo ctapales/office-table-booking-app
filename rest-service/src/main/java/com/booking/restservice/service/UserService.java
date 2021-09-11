@@ -2,6 +2,7 @@ package com.booking.restservice.service;
 
 import com.booking.restservice.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -9,5 +10,5 @@ public interface UserService {
 
     public Optional<User> getUserById(Integer user_id);
 
-    public boolean findByEmail(String email);
+    public List<User> findUserByEmailAndPassword(String email, String password);
 }
