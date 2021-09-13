@@ -2,6 +2,7 @@
 import Home from "./pages/Home/Home";
 import React, { Component } from "react";
 import "./App.scss";
+import Home1 from "./pages/Home/Home1";
 
 class App extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class App extends Component {
       <div className="App">
         <React.Fragment>
          {/* {this.state.user ? <Home /> : <Login />} */}
-         <Home />
+         <Home1></Home1>
         </React.Fragment>
       </div>
     );

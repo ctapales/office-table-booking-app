@@ -6,6 +6,7 @@ import com.booking.restservice.dto.DeskDTO;
 import com.booking.restservice.dto.ReservationDTO;
 import com.booking.restservice.model.Desk;
 import com.booking.restservice.model.Reservation;
+import com.booking.restservice.model.User;
 import com.booking.restservice.service.DeskService;
 import com.booking.restservice.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/desk")
 public class DeskController {
 
@@ -52,5 +54,17 @@ public class DeskController {
         }
 
         return null;
+    }
+
+    @GetMapping("/{id}/reservations/{schedule}")
+    public List<ReservationDTO> getReservationsByUserAndSchedule(@PathVariable Integer id, @PathVariable String schedule) {
+        Optional<Desk> desk = deskService.getDeskById(id);
+
+        if (!desk.isPresent()) {
+            return null;
+        }
+
+        List<Reservation> getReservationsByDeskIdAndSchedule = reservationService.getReservationsByDeskIdAndSchedule(id, schedule);
+        return reservationConverter.entityToDTO(getReservationsByDeskIdAndSchedule);
     }
 }

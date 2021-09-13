@@ -12,4 +12,6 @@ public interface ReservationService {
     public List<Reservation> getReservationsByDeskId(Integer id);
 
     public List<Reservation> getReservationsByUserIdAndSchedule(Integer id, String schedule);
+
+    public List<Reservation> getReservationsByDeskIdAndSchedule(Integer id, String schedule);
 }

@@ -32,4 +32,9 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> getReservationsByUserIdAndSchedule(Integer id, String schedule) {
         return reservationRepository.findByUserIdAndSchedule(id,schedule);
     }
+
+    @Override
+    public List<Reservation> getReservationsByDeskIdAndSchedule(Integer id, String schedule) {
+        return reservationRepository.findByDeskIdAndSchedule(id,schedule);
+    }
 }
