@@ -38,6 +38,11 @@ public class UserController {
     @GetMapping("/getUserById/{id}")
     public UserDTO getUserById(@PathVariable("id") Integer id) {
         Optional<User> getUserById = userService.getUserById(id);
+
+        if(!getUserById.isPresent()) {
+            return null;
+        }
+
         User user = getUserById.get();
         return userConverter.entityToDTO(user);
     }
@@ -52,11 +57,11 @@ public class UserController {
     public List<ReservationDTO> getReservationsByUserAndSchedule(@PathVariable Integer id, @PathVariable String schedule) {
         Optional<User> user = userService.getUserById(id);
 
-        if (user.isPresent()) {
-            List<Reservation> getReservationsByUserIdAndSchedule = reservationService.getReservationsByUserIdAndSchedule(id, schedule);
-            return reservationConverter.entityToDTO(getReservationsByUserIdAndSchedule);
+        if (!user.isPresent()) {
+            return null;
         }
 
-        return null;
+        List<Reservation> getReservationsByUserIdAndSchedule = reservationService.getReservationsByUserIdAndSchedule(id, schedule);
+        return reservationConverter.entityToDTO(getReservationsByUserIdAndSchedule);
     }
 }

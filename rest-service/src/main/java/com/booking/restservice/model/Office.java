@@ -19,11 +19,11 @@ public class Office extends Auditable<String>{
     public Office() {
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 

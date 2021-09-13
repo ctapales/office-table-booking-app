@@ -1,6 +1,5 @@
 package com.booking.restservice.service;
 
-import com.booking.restservice.dto.UserDTO;
 import com.booking.restservice.model.User;
 import com.booking.restservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

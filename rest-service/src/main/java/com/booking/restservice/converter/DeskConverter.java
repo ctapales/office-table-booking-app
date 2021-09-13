@@ -1,9 +1,7 @@
 package com.booking.restservice.converter;
 
 import com.booking.restservice.dto.DeskDTO;
-import com.booking.restservice.dto.OfficeDTO;
 import com.booking.restservice.model.Desk;
-import com.booking.restservice.model.Office;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

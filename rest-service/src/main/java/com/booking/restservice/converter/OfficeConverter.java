@@ -1,7 +1,6 @@
 package com.booking.restservice.converter;
 
 import com.booking.restservice.dto.OfficeDTO;
-import com.booking.restservice.dto.UserDTO;
 import com.booking.restservice.model.Office;
 import org.springframework.stereotype.Component;
 

@@ -25,11 +25,11 @@ public class Desk extends  Auditable<String> {
     public Desk() {
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
