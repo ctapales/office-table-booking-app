@@ -15,12 +15,16 @@ public class Reservation extends Auditable<String>{
     private ReservationTimeOfDay timeOfDay = ReservationTimeOfDay.MORNING;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userid", insertable = false, updatable = false)
     private User user;
 
+    private Integer userid;
+
     @ManyToOne
-    @JoinColumn(name = "desk_id")
+    @JoinColumn(name = "deskid", insertable = false, updatable = false)
     private Desk desk;
+
+    private Integer deskid;
 
     public Reservation() {
     }
@@ -50,6 +54,14 @@ public class Reservation extends Auditable<String>{
         this.user = user;
     }
 
+    public Integer getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
+    }
+
     @JsonBackReference(value="desk-reservation")
     public Desk getDesk() {
         return desk;
@@ -57,5 +69,13 @@ public class Reservation extends Auditable<String>{
 
     public void setDesk(Desk desk) {
         this.desk = desk;
+    }
+
+    public Integer getDeskid() {
+        return deskid;
+    }
+
+    public void setDeskid(Integer deskid) {
+        this.deskid = deskid;
     }
 }

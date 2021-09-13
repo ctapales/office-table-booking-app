@@ -11,7 +11,7 @@ import java.util.List;
 public class Desk extends  Auditable<String> {
 
     @Column(name = "number", nullable = false)
-    private int number;
+    private Integer number;
 
     @ManyToOne
     @JoinColumn(name = "officeid", insertable = false, updatable = false)

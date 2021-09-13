@@ -11,7 +11,7 @@ import java.util.List;
 public class Office extends Auditable<String>{
 
     @Column(name = "number", nullable = false)
-    private int number;
+    private Integer number;
 
     @OneToMany(mappedBy = "office")
     private List<Desk> desks;

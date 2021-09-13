@@ -28,4 +28,7 @@ public class DeskServiceImpl implements DeskService {
     public Optional<Desk> getDeskById(Integer id) {
         return deskRepository.findById(id);
     }
+
+    @Override
+    public List<Desk> findByOfficeId(Integer id) { return deskRepository.findByOfficeId(id); }
 }

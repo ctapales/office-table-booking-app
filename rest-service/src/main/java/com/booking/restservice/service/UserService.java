@@ -1,5 +1,6 @@
 package com.booking.restservice.service;
 
+import com.booking.restservice.dto.UserDTO;
 import com.booking.restservice.model.User;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface UserService {
 
     public Optional<User> getUserById(Integer id);
 
-    public List<User> findUserByEmailAndPassword(String email, String password);
+    public List<User> getUsersByEmailAndPassword(String email, String password);
 }

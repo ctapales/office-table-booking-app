@@ -14,7 +14,7 @@ public abstract class Auditable<U> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @CreatedDate
     @Temporal(TIMESTAMP)

@@ -1,5 +1,9 @@
 package com.booking.restservice.controller;
 
+import com.booking.restservice.converter.ReservationConverter;
+import com.booking.restservice.converter.UserConverter;
+import com.booking.restservice.dto.ReservationDTO;
+import com.booking.restservice.dto.UserDTO;
 import com.booking.restservice.model.Reservation;
 import com.booking.restservice.model.User;
 import com.booking.restservice.service.ReservationService;
@@ -18,29 +22,39 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private UserConverter userConverter;
+
+    @Autowired
     private ReservationService reservationService;
+
+    @Autowired
+    private ReservationConverter reservationConverter;
 
     @PostMapping("/saveUser")
     public User saveUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
 
-    @GetMapping("/getUserById/{user_id}")
-    public Optional<User> getUserById(@PathVariable("user_id") int user_id) {
-        return userService.getUserById(user_id);
+    @GetMapping("/getUserById/{id}")
+    public UserDTO getUserById(@PathVariable("id") Integer id) {
+        Optional<User> getUserById = userService.getUserById(id);
+        User user = getUserById.get();
+        return userConverter.entityToDTO(user);
     }
 
     @GetMapping("/findUserByEmailAndPassword/{email}/{password}")
-    public List<User> findUserByEmailAndPassword(@PathVariable("email") String email, @PathVariable("password") String password) {
-        return userService.findUserByEmailAndPassword(email, password);
+    public List<UserDTO> getUsersByEmailAndPassword(@PathVariable("email") String email, @PathVariable("password") String password) {
+        List<User> findAll = userService.getUsersByEmailAndPassword(email, password);
+        return userConverter.entityToDTO(findAll);
     }
 
     @GetMapping("/{id}/reservations/{schedule}")
-    public List<Reservation> getReservationsByUserAndSchedule(@PathVariable Integer id, @PathVariable String schedule) {
+    public List<ReservationDTO> getReservationsByUserAndSchedule(@PathVariable Integer id, @PathVariable String schedule) {
         Optional<User> user = userService.getUserById(id);
 
         if (user.isPresent()) {
-            return reservationService.getReservationsByUserIdAndSchedule(id, schedule);
+            List<Reservation> getReservationsByUserIdAndSchedule = reservationService.getReservationsByUserIdAndSchedule(id, schedule);
+            return reservationConverter.entityToDTO(getReservationsByUserIdAndSchedule);
         }
 
         return null;

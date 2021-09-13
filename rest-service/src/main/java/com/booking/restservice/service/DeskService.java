@@ -11,4 +11,6 @@ public interface DeskService {
     public List<Desk> getAllDesk();
 
     public Optional<Desk> getDeskById(Integer id);
+
+    public List<Desk> findByOfficeId(Integer id);
 }
