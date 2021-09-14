@@ -1,31 +1,26 @@
 // import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
-import React, { Component } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import "./App.scss";
-import Home1 from "./pages/Home/Home1";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: []
-    };
-  }
+function App() {
+  const [user, setUser] = useState([]);
 
-  componentDidMount() {
-    this.setState({user: null})
-  }
+  useEffect(() => {
+    axios.get(`http://localhost:8080/user/getUserById/1`).then(response => {
+      setUser(response.data);
+    });
+  }, []);
 
-  render() {
-    return (
-      <div className="App">
-        <React.Fragment>
-         {/* {this.state.user ? <Home /> : <Login />} */}
-         <Home1></Home1>
-        </React.Fragment>
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <React.Fragment>
+        {/* {this.state.user ? <Home /> : <Login />} */}
+        <Home user={user} />
+      </React.Fragment>
+    </div>
+  );
 }
 
 export default App;

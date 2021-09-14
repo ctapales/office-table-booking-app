@@ -1,138 +1,71 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import ReservationForm from "../../components/Home/ReservationForm";
 import ReservationTable from "../../components/Home/ReservationTable";
+import axios from "axios";
 import "./style.scss";
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
+export default function Home1({ user }) {
+  const [schedule, setSchedule] = useState(new Date());
+  const [reservationList, setReservationList] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
-    // The state handles all information/variables you may want to retain
-    this.state = {
-      levels: [],
-      tables: [],
-      levelTables: [],
-      reservedTables: [],
-      schedule: ["Morning", "Evening", "Whole Day"],
-      selectedSchedule: "Morning",
-      selectedLevel: 1,
-      selectedTable: 1,
-      selectedDate: new Date()
-    };
-  }
+  useEffect(() => {
+    handleScheduleChange(new Date());
+  }, []);
 
-  // Activates after all the elements of the page is rendered correctly
-  componentDidMount() {
-    this.initialize();
-  }
-
-  initialize() {
-    fetch("./test-data.json").then(response => response.json()).then(data => {
-      let date = new Date();
-      let dateString = date.toLocaleString("en-US", {
-        timeZone: "Europe/Amsterdam"
-      });
-      let selectedDate = new Date(dateString);
-
-      this.setState(
-        {
-          levels: data.levels,
-          tables: data.tables,
-          reservedTables: data.reservedTables,
-          selectedDate: selectedDate
-        },
-        () => {
-          this.getLevelTables(this.state.levels[0]["levelID"]);
-        }
-      );
-    });
-  }
-
-  // Filters Tables based by Level ID
-  getLevelTables(levelID) {
-    let levelTables = [];
-
-    for (let i = 0; i < this.state.tables.length; i++) {
-      if (this.state.tables[i]["levelID"] === parseInt(levelID, 10)) {
-        levelTables.push(this.state.tables[i]);
+  useEffect(
+    () => {
+      if (user !== undefined && user.id !== undefined) {
+        let newSchedule = formatSchedule(schedule);
+        axios
+          .get(
+            `http://localhost:8080/user/${user.id}/reservations/${newSchedule}`
+          )
+          .then(response => {
+            setReservationList(response.data);
+          });
       }
-    }
+    },
+    
+    [user, showModal, schedule]
+  );
 
-    this.setState({ levelTables: levelTables });
+  function handleScheduleChange(schedule) {
+    setSchedule(new Date(schedule));
   }
 
-  // Handles changes in the floor level dropdown select
-  handleLevelChange(event) {
-    let levelID = event.target.value;
-    this.setState({ selectedLevel: parseInt(levelID, 10) }, () =>
-      this.getLevelTables(levelID)
-    );
+  function handleShowModal(value) {
+    setShowModal(value);
   }
 
-  // Handles changes in the floor level dropdown select
-  handleTableChange(event) {
-    let selectedTable = event.target.value;
-    this.setState({ selectedTable: parseInt(selectedTable, 10) });
-  }
-
-  handleDateChange(selectedDate) {
-    this.setState({ selectedDate: selectedDate });
-  }
-
-  // Handles changes in the floor level dropdown select
-  handleScheduleChange(event) {
-    let selectedSchedule = event.target.value;
-    this.setState({ selectedSchedule: selectedSchedule });
-  }
-
-  // Handles changes in the floor level dropdown select
-  handleSaveClick(event) {
-    event.preventDefault();
-    let index = this.state.reservedTables.length;
-    let date = new Date(this.state.selectedDate);
+  function formatSchedule(schedule) {
+    let date = new Date(schedule);
     let europeDate = date.toLocaleString("en-US", {
       timeZone: "Europe/Amsterdam"
     });
-    let reservation = {
-      reserveID: index,
-      levelID: this.state.selectedLevel,
-      tableID: this.state.selectedTable,
-      date: europeDate,
-      schedule: this.state.selectedSchedule
-    };
+    let newDate = new Date(europeDate);
 
-    this.setState({
-      reservedTables: [...this.state.reservedTables, reservation]
-    });
+    let month = ("0" + (newDate.getMonth() + 1)).slice(-2);
+    let day = ("0" + newDate.getDate()).slice(-2);
+    let year = newDate.getFullYear();
+
+    return `${month}.${day}.${year}`;
   }
 
-  render() {
-    console.log(
-      `STATE VALUES: ${this.state.selectedLevel} ${this.state
-        .selectedTable} ${this.state.selectedDate} ${this.state.selectedSchedule}`
-    );
-
-    return (
-      <div className="page-home">
-        <Container>
-          <ReservationForm
-            // Passes all state variables to child component
-            {...this.state}
-            handleLevelChange={this.handleLevelChange.bind(this)}
-            handleTableChange={this.handleTableChange.bind(this)}
-            handleDateChange={this.handleDateChange.bind(this)}
-            handleScheduleChange={this.handleScheduleChange.bind(this)}
-            handleSaveClick={this.handleSaveClick.bind(this)}
-          />
-          <ReservationTable
-            // Passes all state variables to child component
-            {...this.state}
-          />
-        </Container>
-      </div>
-    );
-  }
+  return (
+    <div className="page-home">
+      <Container>
+        <ReservationForm
+          user={user.id}
+          schedule={schedule}
+          reservationList={reservationList}
+          showModal={showModal}
+          handleShowModal={handleShowModal}
+          handleScheduleChange={handleScheduleChange}
+        />
+        <ReservationTable reservationList={reservationList} />
+      </Container>
+    </div>
+  );
 }
-
-export default Home;

@@ -2,8 +2,10 @@ package com.booking.restservice.converter;
 
 import com.booking.restservice.dto.ReservationDTO;
 import com.booking.restservice.model.Desk;
+import com.booking.restservice.model.Office;
 import com.booking.restservice.model.Reservation;
 import com.booking.restservice.service.DeskService;
+import com.booking.restservice.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +18,13 @@ public class ReservationConverter {
     @Autowired
     private DeskService deskService;
 
+    @Autowired
+    private OfficeService officeService;
+
 
     public ReservationDTO entityDTO(Reservation reservation) {
-        Integer number = null;
+        Integer desk = null;
+        Integer office = null;
         ReservationDTO dto = new ReservationDTO();
 
         dto.setId(reservation.getId());
@@ -28,11 +34,19 @@ public class ReservationConverter {
         Optional<Desk> getDeskById = deskService.getDeskById(reservation.getDeskid());
 
         if(getDeskById.isPresent()) {
-            Desk desk = getDeskById.get();
-            number = desk.getNumber();
+            Desk newDesk = getDeskById.get();
+            desk = newDesk.getNumber();
+
+            Optional<Office> getOfficeById = officeService.getOfficeById(newDesk.getOfficeid());
+
+            if(getOfficeById.isPresent()) {
+                Office newOffice = getOfficeById.get();
+                office = newOffice.getNumber();
+            }
         }
 
-        dto.setNumber(number);
+        dto.setDesk(desk);
+        dto.setOffice(office);
 
         return dto;
     }

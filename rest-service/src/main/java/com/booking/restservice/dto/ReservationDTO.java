@@ -4,16 +4,18 @@ import com.booking.restservice.model.ReservationTimeOfDay;
 
 public class ReservationDTO {
     private Integer id;
-    private Integer number;
+    private Integer desk;
+    private Integer office;
     private String schedule;
     private ReservationTimeOfDay timeOfDay;
 
     public ReservationDTO() {
     }
 
-    public ReservationDTO(Integer id, Integer number, String schedule, ReservationTimeOfDay timeOfDay) {
+    public ReservationDTO(Integer id, Integer desk, Integer office, String schedule, ReservationTimeOfDay timeOfDay) {
         this.id = id;
-        this.number = number;
+        this.desk = desk;
+        this.office = office;
         this.schedule = schedule;
         this.timeOfDay = timeOfDay;
     }
@@ -26,12 +28,20 @@ public class ReservationDTO {
         this.id = id;
     }
 
-    public Integer getNumber() {
-        return number;
+    public Integer getDesk() {
+        return desk;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setDesk(Integer desk) {
+        this.desk = desk;
+    }
+
+    public Integer getOffice() {
+        return office;
+    }
+
+    public void setOffice(Integer office) {
+        this.office = office;
     }
 
     public String getSchedule() {
