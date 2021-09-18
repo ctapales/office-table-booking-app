@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import ConfirmationPrompt from "../Home/ConfirmationPrompt";
 import * as API from './../../services/api';
+import authHeader from "../../services/auth-header";
 
 function ReservationForm({
   user,
@@ -22,7 +23,7 @@ function ReservationForm({
   const [timeOfDay, setTimeOfDay] = useState("MORNING");
 
   useEffect(() => {
-    axios.get(`${API.URL}/office/getAllOffice`).then(response => {
+    axios.get(`http://localhost:8080/office/getAllOffice`).then(response => {
       setOfficeList(response.data);
     });
   }, []);

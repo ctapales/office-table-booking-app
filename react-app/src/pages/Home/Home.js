@@ -5,10 +5,11 @@ import ReservationTable from "../../components/Home/ReservationTable";
 import axios from "axios";
 import "./style.scss";
 
-export default function Home1({ user }) {
+export default function Home1() {
   const [schedule, setSchedule] = useState(new Date());
   const [reservationList, setReservationList] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const user = localStorage.getItem('user');
 
   useEffect(() => {
     handleScheduleChange(new Date());

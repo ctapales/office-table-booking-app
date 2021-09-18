@@ -7,8 +7,9 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    let user = localStorage.getItem('user');
-    if(user) {
+    let user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      console.log(user.id);
       setUser(user);
     }
   }, []);
@@ -16,7 +17,7 @@ function App() {
   return (
     <div className="App">
       <React.Fragment>
-        {user? <Home user={user} />:<Login />}
+        {user !== null ? <Home /> : <Login />}
       </React.Fragment>
     </div>
   );

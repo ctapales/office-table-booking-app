@@ -12,6 +12,9 @@ import java.util.Collection;
 @Service
 public class UserDetailsImpl implements UserDetails {
 
+    private Integer id;
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
 
@@ -19,6 +22,9 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public UserDetailsImpl(User user) {
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.password = user.getPassword();
     }
@@ -26,6 +32,18 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     @Override
