@@ -1,23 +1,22 @@
-// import Login from "./pages/Login/Login";
-import Home from "./pages/Home/Home";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./App.scss";
+import Login from "./pages/Login/Login";
+import Home from "./pages/Home/Home";
 
 function App() {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/user/getUserById/1`).then(response => {
-      setUser(response.data);
-    });
+    let user = localStorage.getItem('user');
+    if(user) {
+      setUser(user);
+    }
   }, []);
 
   return (
     <div className="App">
       <React.Fragment>
-        {/* {this.state.user ? <Home /> : <Login />} */}
-        <Home user={user} />
+        {user? <Home user={user} />:<Login />}
       </React.Fragment>
     </div>
   );
