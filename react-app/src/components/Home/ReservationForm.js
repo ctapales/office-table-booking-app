@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import ConfirmationPrompt from "../Home/ConfirmationPrompt";
+import * as API from './../../services/api';
 
 function ReservationForm({
   user,
@@ -21,7 +22,7 @@ function ReservationForm({
   const [timeOfDay, setTimeOfDay] = useState("MORNING");
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/office/getAllOffice`).then(response => {
+    axios.get(`${API.URL}/office/getAllOffice`).then(response => {
       setOfficeList(response.data);
     });
   }, []);
@@ -30,7 +31,7 @@ function ReservationForm({
     () => {
       if (officeList.length > 0) {
         const id = officeList[0].id;
-        axios.get(`http://localhost:8080/office/${id}/desks`).then(response => {
+        axios.get(`${API.URL}/office/${id}/desks`).then(response => {
           setDeskList(response.data);
         });
       }
@@ -51,7 +52,7 @@ function ReservationForm({
     () => {
       let newSchedule = formatSchedule(schedule);
       axios
-        .get(`http://localhost:8080/desk/${desk}/reservations/${newSchedule}`)
+        .get(`${API.URL}/desk/${desk}/reservations/${newSchedule}`)
         .then(response => {
           setReservedTimeOfDayList(
             response.data.map(reservation => reservation.timeOfDay)
@@ -63,7 +64,7 @@ function ReservationForm({
 
   useEffect(
     () => {
-      const timeOfDay = ["MORNING", "AFTERNOON", "WHOLE_DAY"];
+      const timeOfDay = ["MORNING", "AFTERNOON"];
       let selectedValue = "";
 
       timeOfDay.forEach(time => {
@@ -79,7 +80,7 @@ function ReservationForm({
 
   function handleOfficeChange(event) {
     axios
-      .get(`http://localhost:8080/office/${event.target.value}/desks`)
+      .get(`${API.URL}/office/${event.target.value}/desks`)
       .then(response => {
         setDeskList(response.data);
       });

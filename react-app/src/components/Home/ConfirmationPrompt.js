@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
+import * as API from './../../services/api';
 
 function ConfirmationPrompt({
   showModal,
@@ -20,7 +21,7 @@ function ConfirmationPrompt({
     };
 
     axios
-      .post(`http://localhost:8080/reservation/saveReservation`, newReservation)
+      .post(`${API.URL}/reservation/saveReservation`, newReservation)
       .then(response => handleShowModal(false));
   }
 
