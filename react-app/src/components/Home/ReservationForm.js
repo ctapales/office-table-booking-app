@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import ConfirmationPrompt from "../Home/ConfirmationPrompt";
-import * as API from './../../services/api';
+import * as API from "./../../services/api";
 import authHeader from "../../services/auth-header";
 
 function ReservationForm({
@@ -23,18 +23,22 @@ function ReservationForm({
   const [timeOfDay, setTimeOfDay] = useState("MORNING");
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/office/getAllOffice`).then(response => {
-      setOfficeList(response.data);
-    });
+    axios
+      .get(`${API.URL}/office/getAllOffice`, { headers: authHeader() })
+      .then(response => {
+        setOfficeList(response.data);
+      });
   }, []);
 
   useEffect(
     () => {
       if (officeList.length > 0) {
         const id = officeList[0].id;
-        axios.get(`${API.URL}/office/${id}/desks`).then(response => {
-          setDeskList(response.data);
-        });
+        axios
+          .get(`${API.URL}/office/${id}/desks`, { headers: authHeader() })
+          .then(response => {
+            setDeskList(response.data);
+          });
       }
     },
     [officeList]
@@ -53,7 +57,9 @@ function ReservationForm({
     () => {
       let newSchedule = formatSchedule(schedule);
       axios
-        .get(`${API.URL}/desk/${desk}/reservations/${newSchedule}`)
+        .get(`${API.URL}/desk/${desk}/reservations/${newSchedule}`, {
+          headers: authHeader()
+        })
         .then(response => {
           setReservedTimeOfDayList(
             response.data.map(reservation => reservation.timeOfDay)
@@ -81,7 +87,9 @@ function ReservationForm({
 
   function handleOfficeChange(event) {
     axios
-      .get(`${API.URL}/office/${event.target.value}/desks`)
+      .get(`${API.URL}/office/${event.target.value}/desks`, {
+        headers: authHeader()
+      })
       .then(response => {
         setDeskList(response.data);
       });
@@ -212,8 +220,8 @@ const DeskOptions = ({ deskList }) =>
   );
 
 const TimeOfDayOptions = ({ timeOfDay, reservedTimeOfDayList }) => {
-  if(!timeOfDay) {
-    return <option value="">N/A</option>
+  if (!timeOfDay) {
+    return <option value="">N/A</option>;
   }
   const timeOfDayList = ["MORNING", "AFTERNOON", "WHOLE_DAY"];
   let options = [];

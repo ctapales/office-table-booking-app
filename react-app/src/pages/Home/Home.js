@@ -4,12 +4,13 @@ import ReservationForm from "../../components/Home/ReservationForm";
 import ReservationTable from "../../components/Home/ReservationTable";
 import axios from "axios";
 import "./style.scss";
+import authHeader from "../../services/auth-header";
 
 export default function Home1() {
   const [schedule, setSchedule] = useState(new Date());
   const [reservationList, setReservationList] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const user = localStorage.getItem('user');
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     handleScheduleChange(new Date());
@@ -21,7 +22,7 @@ export default function Home1() {
         let newSchedule = formatSchedule(schedule);
         axios
           .get(
-            `http://localhost:8080/user/${user.id}/reservations/${newSchedule}`
+            `http://localhost:8080/user/${user.id}/reservations/${newSchedule}`, { headers: authHeader() }
           )
           .then(response => {
             setReservationList(response.data);

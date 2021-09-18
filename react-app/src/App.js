@@ -5,19 +5,28 @@ import Home from "./pages/Home/Home";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [authenticate, setAuthenticate] = useState(false);
 
-  useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      console.log(user.id);
-      setUser(user);
-    }
-  }, []);
+  useEffect(
+    () => {
+      let user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        setUser(user);
+      }
+    },
+    [authenticate]
+  );
+
+  function handleAuthentication() {
+    setAuthenticate(true);
+  }
 
   return (
     <div className="App">
       <React.Fragment>
-        {user !== null ? <Home /> : <Login />}
+        {user !== null
+          ? <Home />
+          : <Login handleAuthentication={handleAuthentication} />}
       </React.Fragment>
     </div>
   );

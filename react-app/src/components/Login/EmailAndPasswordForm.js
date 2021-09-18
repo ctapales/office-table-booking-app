@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
-import { Formik, setIn } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import * as API from "./../../services/api";
 import axios from "axios";
 
-function EmailAndPasswordForm() {
+function EmailAndPasswordForm({handleAuthentication}) {
   const [invalid, setInvalid] = useState(false);
 
   function login(email, password) {
@@ -13,13 +13,15 @@ function EmailAndPasswordForm() {
       username: email,
       password: password
     };
+
     axios
       .post(`${API.URL}/authenticate`, authenticate)
       .then(response => {
         localStorage.setItem("user", JSON.stringify(response.data) );
+        handleAuthentication();
       })
       .catch(function(error) {
-        if(error.response.status === 403) {
+        if(error.response && error.response.status === 403) {
           setInvalid(true);
         }
         console.log(error);
@@ -87,7 +89,6 @@ function EmailAndPasswordForm() {
               variant="primary"
               type="submit"
               disabled={isSubmitting}
-              block
             >
               Submit
             </Button>
