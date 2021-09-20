@@ -1,9 +1,10 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
-import * as API from './../../services/api';
+import * as API from '../../services/api';
+import authHeader from "../../services/auth-header";
 
-function ConfirmationPrompt({
+function ConfirmSave({
   showModal,
   schedule,
   timeOfDay,
@@ -21,7 +22,9 @@ function ConfirmationPrompt({
     };
 
     axios
-      .post(`${API.URL}/reservation/saveReservation`, newReservation)
+      .post(`${API.URL}/reservation/saveReservation`, newReservation, {
+        headers: authHeader()
+      })
       .then(response => handleShowModal(false));
   }
 
@@ -88,9 +91,9 @@ const TimeOfDay = ({ timeOfDay }) => {
       return "Whole Day (Until 04:00 PM)";
     }
     default: {
-      break;
+      return null;
     }
   }
 };
 
-export default ConfirmationPrompt;
+export default ConfirmSave;

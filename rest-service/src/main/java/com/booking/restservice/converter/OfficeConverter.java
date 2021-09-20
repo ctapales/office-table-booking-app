@@ -14,6 +14,7 @@ public class OfficeConverter {
 
         dto.setId(office.getId());
         dto.setNumber(office.getNumber());
+        dto.setLayout(office.getLayout());
 
         return dto;
     }

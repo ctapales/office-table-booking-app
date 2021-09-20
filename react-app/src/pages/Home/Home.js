@@ -5,11 +5,13 @@ import ReservationTable from "../../components/Home/ReservationTable";
 import axios from "axios";
 import "./style.scss";
 import authHeader from "../../services/auth-header";
+import Logout from "../../components/Logout/Logout";
 
-export default function Home1() {
+function Home({handleAuthentication}) {
   const [schedule, setSchedule] = useState(new Date());
   const [reservationList, setReservationList] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
@@ -22,23 +24,27 @@ export default function Home1() {
         let newSchedule = formatSchedule(schedule);
         axios
           .get(
-            `http://localhost:8080/user/${user.id}/reservations/${newSchedule}`, { headers: authHeader() }
+            `http://localhost:8080/user/${user.id}/reservations/${newSchedule}`,
+            { headers: authHeader() }
           )
           .then(response => {
             setReservationList(response.data);
           });
       }
     },
-    
-    [user, showModal, schedule]
+    [user, showSaveModal, showDeleteModal, schedule]
   );
 
   function handleScheduleChange(schedule) {
     setSchedule(new Date(schedule));
   }
 
-  function handleShowModal(value) {
-    setShowModal(value);
+  function handleShowSaveModal(value) {
+    setShowSaveModal(value);
+  }
+
+  function handleShowDeleteModal(value) {
+    setShowDeleteModal(value);
   }
 
   function formatSchedule(schedule) {
@@ -58,16 +64,23 @@ export default function Home1() {
   return (
     <div className="page-home">
       <Container>
+        <Logout handleAuthentication={handleAuthentication}/>
         <ReservationForm
           user={user.id}
           schedule={schedule}
           reservationList={reservationList}
-          showModal={showModal}
-          handleShowModal={handleShowModal}
+          showModal={showSaveModal}
+          handleShowModal={handleShowSaveModal}
           handleScheduleChange={handleScheduleChange}
         />
-        <ReservationTable reservationList={reservationList} />
+        <ReservationTable
+          reservationList={reservationList}
+          showModal={showDeleteModal}
+          handleShowModal={handleShowDeleteModal}
+        />
       </Container>
     </div>
   );
 }
+
+export default Home;

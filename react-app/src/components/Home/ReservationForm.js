@@ -4,9 +4,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DatePicker from "react-datepicker";
 import axios from "axios";
-import ConfirmationPrompt from "../Home/ConfirmationPrompt";
+import ConfirmSave from "./ConfirmSave";
 import * as API from "./../../services/api";
 import authHeader from "../../services/auth-header";
+import LayoutImage from "./LayoutImage";
 
 function ReservationForm({
   user,
@@ -18,6 +19,7 @@ function ReservationForm({
 }) {
   const [officeList, setOfficeList] = useState([]);
   const [desk, setDesk] = useState(1);
+  const [officeId, setOfficeId] = useState(1);
   const [deskList, setDeskList] = useState([]);
   const [reservedTimeOfDayList, setReservedTimeOfDayList] = useState([]);
   const [timeOfDay, setTimeOfDay] = useState("MORNING");
@@ -37,6 +39,7 @@ function ReservationForm({
         axios
           .get(`${API.URL}/office/${id}/desks`, { headers: authHeader() })
           .then(response => {
+            setOfficeId(id);
             setDeskList(response.data);
           });
       }
@@ -71,6 +74,10 @@ function ReservationForm({
 
   useEffect(
     () => {
+      if (reservedTimeOfDayList.includes("WHOLE_DAY")) {
+        setTimeOfDay("");
+      }
+
       const timeOfDay = ["MORNING", "AFTERNOON"];
       let selectedValue = "";
 
@@ -82,7 +89,7 @@ function ReservationForm({
 
       setTimeOfDay(selectedValue);
     },
-    [showModal, reservationList, reservedTimeOfDayList]
+    [showModal, reservationList, schedule, reservedTimeOfDayList]
   );
 
   function handleOfficeChange(event) {
@@ -91,6 +98,7 @@ function ReservationForm({
         headers: authHeader()
       })
       .then(response => {
+        setOfficeId(event.target.value);
         setDeskList(response.data);
       });
   }
@@ -125,13 +133,14 @@ function ReservationForm({
 
   return (
     <React.Fragment>
-      <Card className="reservation-form">
+      <LayoutImage officeId={officeId} />
+      <Card className="reservation-form mt-5">
         <Card.Body>
           <Form className="home-form">
             <Row>
               <Col xs={3}>
                 <Form.Group className="form-group">
-                  <Form.Label>Select Floor</Form.Label>
+                  <Form.Label>Select Office</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
                     onChange={handleOfficeChange}
@@ -142,7 +151,7 @@ function ReservationForm({
               </Col>
               <Col xs={3}>
                 <Form.Group className="form-group">
-                  <Form.Label>Select Table</Form.Label>
+                  <Form.Label>Select Desk</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
                     onChange={handleDeskChange}
@@ -193,7 +202,7 @@ function ReservationForm({
           </Form>
         </Card.Body>
       </Card>
-      <ConfirmationPrompt
+      <ConfirmSave
         showModal={showModal}
         schedule={schedule}
         timeOfDay={timeOfDay}
@@ -243,6 +252,9 @@ const TimeOfDayOptions = ({ timeOfDay, reservedTimeOfDayList }) => {
         break;
       }
       case "WHOLE_DAY": {
+        if (reservedTimeOfDayList.length > 0) {
+          continue;
+        }
         time = "Whole Day";
         break;
       }

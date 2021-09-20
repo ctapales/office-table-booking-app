@@ -32,4 +32,10 @@ public class ReservationController {
         return reservationConverter.entityToDTO(getAllReservation);
     }
 
+    @DeleteMapping("/{id}/deleteReservation")
+    public void DeleteReservation(@PathVariable Integer id) {
+        reservationService.deleteReservation(id);
+    }
+
+
 }

@@ -37,4 +37,9 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> getReservationsByDeskIdAndSchedule(Integer id, String schedule) {
         return reservationRepository.findByDeskIdAndSchedule(id,schedule);
     }
+
+    @Override
+    public void deleteReservation(Integer id) {
+        reservationRepository.deleteById(id);
+    }
 }

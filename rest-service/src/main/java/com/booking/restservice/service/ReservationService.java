@@ -14,4 +14,6 @@ public interface ReservationService {
     public List<Reservation> getReservationsByUserIdAndSchedule(Integer id, String schedule);
 
     public List<Reservation> getReservationsByDeskIdAndSchedule(Integer id, String schedule);
+
+    public void deleteReservation(Integer id);
 }

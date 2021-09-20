@@ -42,6 +42,18 @@ public class OfficeController {
         return officeConverter.entityToDTO(getAllOffice);
     }
 
+    @GetMapping("/getOfficeById/{id}")
+    public OfficeDTO getOfficeById(@PathVariable Integer id) {
+        Optional<Office> getOfficeById = officeService.getOfficeById(id);
+
+        if(!getOfficeById.isPresent()) {
+            return null;
+        }
+
+        Office office = getOfficeById.get();
+        return officeConverter.entityToDTO(office);
+    }
+
     @GetMapping("/{id}/desks")
     public List<DeskDTO> getDesksByOffice(@PathVariable Integer id) {
         Optional<Office> office = officeService.getOfficeById(id);
