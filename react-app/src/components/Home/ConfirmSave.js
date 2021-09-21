@@ -1,23 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
-import * as API from '../../services/api';
+import * as API from "../../services/api";
 import authHeader from "../../services/auth-header";
 
 function ConfirmSave({
   showModal,
   schedule,
   timeOfDay,
-  user,
   desk,
-  handleShowModal
+  handleShowModal,
+  handleSaveSuccess
 }) {
+  const [deskNumber, setDeskNumber] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`${API.URL}/desk/getDeskById/${desk}`, { headers: authHeader() })
+      .then(response => {
+        setDeskNumber(response.data.number);
+      });
+  }, [desk]);
+
   function handleConfirm(event) {
+    const user = JSON.parse(localStorage.getItem("user"));
     let newSchedule = formatSchedule(schedule);
     let newReservation = {
       schedule: newSchedule,
       timeOfDay: timeOfDay,
-      userid: user,
+      userid: user.id,
       deskid: desk
     };
 
@@ -25,7 +36,14 @@ function ConfirmSave({
       .post(`${API.URL}/reservation/saveReservation`, newReservation, {
         headers: authHeader()
       })
-      .then(response => handleShowModal(false));
+      .then(response => {
+        handleShowModal(false);
+        handleSaveSuccess();
+      })
+      .catch(error => {
+        handleSaveSuccess();
+        handleShowModal(false);
+      });
   }
 
   function handleCancel() {
@@ -62,7 +80,7 @@ function ConfirmSave({
             <b>Reservation Details</b>
           </p>
           <p>
-            Reserving Desk {desk} on {formatSchedule(schedule)}, {" "}
+            Reserving Desk {deskNumber} on {formatSchedule(schedule)}, {" "}
             <TimeOfDay timeOfDay={timeOfDay} />
           </p>
         </Modal.Body>

@@ -21,7 +21,7 @@ function App() {
       setAuthenticate(true);
       return;
     }
-    console.log(user.jwt);
+    console.log(`TOKEN: ${user.jwt}`);
     axios
       .get(`${API.URL}/user/getUserById/${user.id}`, {
         headers: authHeader()

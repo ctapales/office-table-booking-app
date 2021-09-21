@@ -43,6 +43,18 @@ public class DeskController {
         return deskConverter.entityToDTO(getAllDesk);
     }
 
+    @GetMapping("/getDeskById/{id}")
+    public DeskDTO getAllDesk(@PathVariable Integer id) {
+        Optional<Desk> getDeskById = deskService.getDeskById(id);
+
+        if(!getDeskById.isPresent()) {
+            return null;
+        }
+
+        Desk desk = getDeskById.get();
+        return deskConverter.entityToDTO(desk);
+    }
+
     @GetMapping("{id}/reservations")
     public List<ReservationDTO> getReservationsByDesk(@PathVariable Integer id) {
         Optional<Desk> desk = deskService.getDeskById(id);

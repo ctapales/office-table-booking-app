@@ -6,7 +6,6 @@ import * as API from "./../../services/api";
 
 function LayoutImage({ officeId }) {
   const [office, setOffice] = useState([]);
-  const [image, setImage] = useState("");
 
   useEffect(
     () => {
@@ -21,34 +20,7 @@ function LayoutImage({ officeId }) {
     [officeId]
   );
 
-  function handleImageUpload(event) {
-    event.preventDefault();
-
-    const data = image.split(",")[1];
-    let raw = window.atob(data);
-    let rawLength = raw.length;
-    let array = new Uint8Array(new ArrayBuffer(rawLength));
-    for (let i = 0; i < rawLength; i++) {
-      array[i] = raw.charCodeAt(i);
-    }
-    let img = [];
-    for (let i = 0; i < rawLength; i++) {
-      array[i] = raw.charCodeAt(i);
-      img.push(array[i]);
-    }
-  }
-
-  function handleImageChange(event) {
-    let reader = new FileReader();
-    let file = event.target.files[0];
-
-    reader.onloadend = () => {
-      setImage(reader.data);
-    };
-
-    reader.readAsDataURL(file);
-  }
-
+ 
   return (
     <React.Fragment>
       <Card className="reservation-form mt-5">

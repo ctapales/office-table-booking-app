@@ -4,13 +4,25 @@ import axios from "axios";
 import * as API from "../../services/api";
 import authHeader from "../../services/auth-header";
 
-function ConfirmDelete({ reservation, showModal, handleShowModal }) {
+function ConfirmDelete({
+  reservation,
+  showModal,
+  handleDeleteSuccess,
+  handleShowModal
+}) {
   function handleConfirm(event) {
     axios
       .delete(`${API.URL}/reservation/${reservation.id}/deleteReservation`, {
         headers: authHeader()
       })
-      .then(response => handleShowModal(false));
+      .then(response => {
+        handleDeleteSuccess();
+        handleShowModal(false);
+      })
+      .catch(error => {
+        handleDeleteSuccess();
+        handleShowModal(false);
+      });
   }
 
   function handleCancel() {

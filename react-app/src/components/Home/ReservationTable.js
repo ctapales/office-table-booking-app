@@ -3,7 +3,12 @@ import { Table } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import ConfirmDelete from "./ConfirmDelete";
 
-function ReservationTable({ reservationList, showModal, handleShowModal }) {
+function ReservationTable({
+  reservationList,
+  showModal,
+  handleDeleteSuccess,
+  handleShowModal
+}) {
   const [reservation, setReservation] = useState([]);
 
   function handleDelete(reservation) {
@@ -29,7 +34,12 @@ function ReservationTable({ reservationList, showModal, handleShowModal }) {
           />
         </tbody>
       </Table>
-      <ConfirmDelete reservation={reservation} showModal={showModal} handleShowModal={handleShowModal}/>
+      <ConfirmDelete
+        reservation={reservation}
+        handleDeleteSuccess={handleDeleteSuccess}
+        showModal={showModal}
+        handleShowModal={handleShowModal}
+      />
     </React.Fragment>
   );
 }

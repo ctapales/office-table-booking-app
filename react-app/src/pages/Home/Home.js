@@ -12,7 +12,8 @@ function Home({handleAuthentication}) {
   const [reservationList, setReservationList] = useState([]);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
 
   useEffect(() => {
     handleScheduleChange(new Date());
@@ -20,6 +21,7 @@ function Home({handleAuthentication}) {
 
   useEffect(
     () => {
+      const user = JSON.parse(localStorage.getItem("user"));
       if (user !== undefined && user.id !== undefined) {
         let newSchedule = formatSchedule(schedule);
         axios
@@ -32,7 +34,7 @@ function Home({handleAuthentication}) {
           });
       }
     },
-    [user, showSaveModal, showDeleteModal, schedule]
+    [schedule, saveSuccess, deleteSuccess]
   );
 
   function handleScheduleChange(schedule) {
@@ -45,6 +47,14 @@ function Home({handleAuthentication}) {
 
   function handleShowDeleteModal(value) {
     setShowDeleteModal(value);
+  }
+
+  function handleSaveSuccess() {
+    setSaveSuccess(true);
+  }
+
+  function handleDeleteSuccess() {
+    setDeleteSuccess(true)
   }
 
   function formatSchedule(schedule) {
@@ -66,16 +76,18 @@ function Home({handleAuthentication}) {
       <Container>
         <Logout handleAuthentication={handleAuthentication}/>
         <ReservationForm
-          user={user.id}
           schedule={schedule}
           reservationList={reservationList}
           showModal={showSaveModal}
+          saveSuccess={saveSuccess}
           handleShowModal={handleShowSaveModal}
+          handleSaveSuccess={handleSaveSuccess}
           handleScheduleChange={handleScheduleChange}
         />
         <ReservationTable
           reservationList={reservationList}
           showModal={showDeleteModal}
+          handleDeleteSuccess={handleDeleteSuccess}
           handleShowModal={handleShowDeleteModal}
         />
       </Container>

@@ -7,19 +7,18 @@ import axios from "axios";
 import ConfirmSave from "./ConfirmSave";
 import * as API from "./../../services/api";
 import authHeader from "../../services/auth-header";
-import LayoutImage from "./LayoutImage";
 
 function ReservationForm({
-  user,
   schedule,
   reservationList,
   showModal,
+  saveSuccess,
   handleShowModal,
+  handleSaveSuccess,
   handleScheduleChange
 }) {
   const [officeList, setOfficeList] = useState([]);
   const [desk, setDesk] = useState(1);
-  const [officeId, setOfficeId] = useState(1);
   const [deskList, setDeskList] = useState([]);
   const [reservedTimeOfDayList, setReservedTimeOfDayList] = useState([]);
   const [timeOfDay, setTimeOfDay] = useState("MORNING");
@@ -39,7 +38,6 @@ function ReservationForm({
         axios
           .get(`${API.URL}/office/${id}/desks`, { headers: authHeader() })
           .then(response => {
-            setOfficeId(id);
             setDeskList(response.data);
           });
       }
@@ -69,27 +67,27 @@ function ReservationForm({
           );
         });
     },
-    [showModal, desk, schedule, reservationList]
+    [saveSuccess, desk, schedule, reservationList]
   );
 
   useEffect(
     () => {
-      if (reservedTimeOfDayList.includes("WHOLE_DAY")) {
-        setTimeOfDay("");
-      }
-
-      const timeOfDay = ["MORNING", "AFTERNOON"];
+      const timeOfDayList = ["MORNING", "AFTERNOON"];
       let selectedValue = "";
 
-      timeOfDay.forEach(time => {
-        if (!reservedTimeOfDayList.includes(time) && !selectedValue) {
+      timeOfDayList.forEach(time => {
+        if (
+          !reservedTimeOfDayList.includes("WHOLE_DAY") &&
+          !reservedTimeOfDayList.includes(time) &&
+          !selectedValue
+        ) {
           selectedValue = time;
         }
       });
 
       setTimeOfDay(selectedValue);
     },
-    [showModal, reservationList, schedule, reservedTimeOfDayList]
+    [saveSuccess, reservationList, schedule, reservedTimeOfDayList]
   );
 
   function handleOfficeChange(event) {
@@ -98,7 +96,6 @@ function ReservationForm({
         headers: authHeader()
       })
       .then(response => {
-        setOfficeId(event.target.value);
         setDeskList(response.data);
       });
   }
@@ -133,7 +130,7 @@ function ReservationForm({
 
   return (
     <React.Fragment>
-      <LayoutImage officeId={officeId} />
+      {/* <LayoutImage officeId={officeId} /> */}
       <Card className="reservation-form mt-5">
         <Card.Body>
           <Form className="home-form">
@@ -206,9 +203,9 @@ function ReservationForm({
         showModal={showModal}
         schedule={schedule}
         timeOfDay={timeOfDay}
-        user={user}
         desk={desk}
         handleShowModal={handleShowModal}
+        handleSaveSuccess={handleSaveSuccess}
       />
     </React.Fragment>
   );
@@ -264,7 +261,7 @@ const TimeOfDayOptions = ({ timeOfDay, reservedTimeOfDayList }) => {
     }
 
     options.push(
-      <option key={i} value={timeOfDay[i]}>
+      <option key={i} value={timeOfDayList[i]}>
         {time}
       </option>
     );
