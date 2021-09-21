@@ -50,11 +50,11 @@ function Home({handleAuthentication}) {
   }
 
   function handleSaveSuccess() {
-    setSaveSuccess(true);
+    setSaveSuccess(!saveSuccess);
   }
 
   function handleDeleteSuccess() {
-    setDeleteSuccess(true)
+    setDeleteSuccess(!deleteSuccess)
   }
 
   function formatSchedule(schedule) {
