@@ -6,12 +6,14 @@ import axios from "axios";
 import "./style.scss";
 import authHeader from "../../services/auth-header";
 import Logout from "../../components/Logout/Logout";
+import * as API from "../../services/api";
 
-function Home({handleAuthentication}) {
+function Home({ handleAuthentication }) {
   const [schedule, setSchedule] = useState(new Date());
   const [reservationList, setReservationList] = useState([]);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
@@ -25,10 +27,9 @@ function Home({handleAuthentication}) {
       if (user !== undefined && user.id !== undefined) {
         let newSchedule = formatSchedule(schedule);
         axios
-          .get(
-            `http://localhost:8080/user/${user.id}/reservations/${newSchedule}`,
-            { headers: authHeader() }
-          )
+          .get(`${API.URL}/user/${user.id}/reservations/${newSchedule}`, {
+            headers: authHeader()
+          })
           .then(response => {
             setReservationList(response.data);
           });
@@ -49,12 +50,16 @@ function Home({handleAuthentication}) {
     setShowDeleteModal(value);
   }
 
+  function handleShowLogoutModal(value) {
+    setShowLogoutModal(value);
+  }
+
   function handleSaveSuccess() {
     setSaveSuccess(!saveSuccess);
   }
 
   function handleDeleteSuccess() {
-    setDeleteSuccess(!deleteSuccess)
+    setDeleteSuccess(!deleteSuccess);
   }
 
   function formatSchedule(schedule) {
@@ -74,7 +79,11 @@ function Home({handleAuthentication}) {
   return (
     <div className="page-home">
       <Container>
-        <Logout handleAuthentication={handleAuthentication}/>
+        <Logout
+          showModal={showLogoutModal}
+          handleShowModal={handleShowLogoutModal}
+          handleAuthentication={handleAuthentication}
+        />
         <ReservationForm
           schedule={schedule}
           reservationList={reservationList}

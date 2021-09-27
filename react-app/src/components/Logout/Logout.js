@@ -1,22 +1,22 @@
 import React from "react";
 import { Button } from "react-bootstrap";
+import ConfirmLogout from "../Home/ConfirmLogout";
 
-function Logout({handleAuthentication}) {
-
-    function handleLogout() {
-      localStorage.setItem("user", null);
-      handleAuthentication();
-    }
+function Logout({ showModal, handleShowModal, handleAuthentication }) {
+  function handleLogout() {
+    handleShowModal(true);
+  }
 
   return (
     <div className="logout">
-      <Button
-        variant="secondary"
-        type="submit"
-        onClick={handleLogout}
-      >
+      <Button variant="secondary" type="submit" onClick={handleLogout}>
         Logout
       </Button>
+      <ConfirmLogout
+        handleAuthentication={handleAuthentication}
+        showModal={showModal}
+        handleShowModal={handleShowModal}
+      />
     </div>
   );
 }

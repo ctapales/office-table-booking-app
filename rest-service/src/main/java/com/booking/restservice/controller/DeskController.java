@@ -6,7 +6,6 @@ import com.booking.restservice.dto.DeskDTO;
 import com.booking.restservice.dto.ReservationDTO;
 import com.booking.restservice.model.Desk;
 import com.booking.restservice.model.Reservation;
-import com.booking.restservice.model.User;
 import com.booking.restservice.service.DeskService;
 import com.booking.restservice.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;

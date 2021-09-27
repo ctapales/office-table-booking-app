@@ -24,7 +24,6 @@ function EmailAndPasswordForm({handleAuthentication}) {
         if(error.response && error.response.status === 403) {
           setInvalid(true);
         }
-        console.log(error);
       });
   }
 

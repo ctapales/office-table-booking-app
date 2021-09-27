@@ -1,7 +1,6 @@
 package com.booking.restservice.service;
 
 import com.booking.restservice.model.User;
-import com.booking.restservice.model.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;

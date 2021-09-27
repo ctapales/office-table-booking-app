@@ -14,10 +14,6 @@ public class Office extends Auditable<String>{
     @Column(name = "number", nullable = false)
     private Integer number;
 
-    @Lob @JsonProperty("image")
-    @Column(name="layout")
-    private byte[] layout;
-
     @OneToMany(mappedBy = "office")
     private List<Desk> desks;
 
@@ -30,14 +26,6 @@ public class Office extends Auditable<String>{
 
     public void setNumber(Integer number) {
         this.number = number;
-    }
-
-    public byte[] getLayout() {
-        return layout;
-    }
-
-    public void setLayout(byte[] layout) {
-        this.layout = layout;
     }
 
     @JsonManagedReference(value="office")

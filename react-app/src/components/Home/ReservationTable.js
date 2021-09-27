@@ -24,7 +24,7 @@ function ReservationTable({
             <th className="text-center">Office</th>
             <th className="text-center">Desk</th>
             <th>Schedule</th>
-            <th className="text-center">Option</th>
+            <th className="text-center">Action</th>
           </tr>
         </thead>
         <tbody>

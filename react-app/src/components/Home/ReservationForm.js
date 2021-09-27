@@ -85,9 +85,16 @@ function ReservationForm({
         }
       });
 
+      if (
+        (timeOfDay === "AFTERNOON" &&
+          !reservedTimeOfDayList.includes("AFTERNOON")) ||
+        timeOfDay === "WHOLE_DAY"
+      ) {
+        return;
+      }
       setTimeOfDay(selectedValue);
     },
-    [saveSuccess, reservationList, schedule, reservedTimeOfDayList]
+    [saveSuccess, reservationList, schedule, timeOfDay, reservedTimeOfDayList]
   );
 
   function handleOfficeChange(event) {
@@ -130,7 +137,6 @@ function ReservationForm({
 
   return (
     <React.Fragment>
-      {/* <LayoutImage officeId={officeId} /> */}
       <Card className="reservation-form mt-5">
         <Card.Body>
           <Form className="home-form">
