@@ -1,0 +1,26 @@
+.login-page {
+    background: #50a3a2;
+
+    .container {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+
+}
+
+.login-page form {
+    .input-feedback {
+        color: rgb(235, 54, 54);
+        font-size: 14px;
+        text-align: left;
+    }
+}
