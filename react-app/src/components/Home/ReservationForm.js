@@ -88,7 +88,8 @@ function ReservationForm({
       if (
         (timeOfDay === "AFTERNOON" &&
           !reservedTimeOfDayList.includes("AFTERNOON")) ||
-        timeOfDay === "WHOLE_DAY"
+        (timeOfDay === "WHOLE_DAY" &&
+          !reservedTimeOfDayList.includes("WHOLE_DAY"))
       ) {
         return;
       }
